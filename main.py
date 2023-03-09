@@ -411,18 +411,4 @@ async def slowmode(interaction: discord.Interaction, seconds: int=None):
                 await interaction.response.send_message ("You do not have required permissions to use this command")
 
 
-@riku.command()
-async def derules(ctx):
-        embed=discord.Embed(title="Regulamin serwera", color=0x2f3136)
-        embed.add_field(name="` 1. Szanuj innych. `", value="<:Icon_Star:1074200070909607998> Musisz szanować wszystkich użytkowników, bez względu na to, jakie masz do nich sympatie. Traktuj innych tak, jak sam chciałbyś być traktowany. Zabroniony jest również obraźliwy język wobec dowolnego użytkownika.", inline=False)
-        embed.add_field(name="` 2. Zakaz materiałów pornograficznych/dla dorosłych/innych NSFW. `", value="<:Icon_Star:1074200070909607998> To jest serwer typu community i takie materiały nie powinny być tutaj udostępniane. Obejmuje to treści krwawe i erotyczne.", inline=False)
-        embed.add_field(name="` 3. Zakaz spamowania i niechcianych treści. `", value="<:Icon_Star:1074200070909607998> Nie wysyłaj wielu podzielonych wiadomości bezpośrednio po sobie.\n<:Icon_Star:1074200070909607998> Nie zakłócaj czatu przez spamowanie.\n<:Icon_Star:1074200070909607998> Nie wysyłaj ani nie odtwarzaj klipów dźwiękowych do przekłuwania uszu w kanałach tekstowych i głosowych.\n<:Icon_Star:1074200070909607998> Trzymaj drażliwe tematy z dala od tego, żebyśmy nie mieli tony nieprzyjemnych argumentów.", inline=False)
-        embed.add_field(name="` 4. Zakaz obraźliwych imion i zdjęć profilowych `", value="<:Icon_Star:1074200070909607998> Zostaniesz poproszony o zmianę swojego imienia lub zdjęcia, jeśli administracja uzna je za nieodpowiednie. \n<:Icon_Star:1074200070909607998> Dołączone są awatary z jaskrawymi, migającymi kolorami.", inline=False)
-        embed.add_field(name="` 5. Zakaz reklam `", value="<:Icon_Star:1074200070909607998> Nie tolerujemy żadnych reklam, w tym reklam PV, czy to dla innych serwerów, czy strumieni.", inline=False)
-        embed.timestamp = datetime.datetime.utcnow()
-        embed.set_author(name="aru, twój lokalny szefir", icon_url="https://us-east-1.tixte.net/uploads/cdn.vorlie.ga/icon_dark.jpg")
-        embed.set_footer(text="Aby się zweryfikować kliknij reakcje.")
-        await ctx.send(embed=embed)
-
-
 riku.run(os.getenv("riku_token"))

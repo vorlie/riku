@@ -1,11 +1,12 @@
 import discord
-from discord import app_commands
-from discord.ext import commands
+import requests
 import datetime
 import random
 import time
 import animec
 import os
+from discord import app_commands
+from discord.ext import commands
 
 intents = discord.Intents.all()
 
@@ -30,34 +31,22 @@ async def on_ready():
     sync = await riku.tree.sync()
     print(idk + colors.BOLD + colors.BLUE + f"     Synced {len(sync)} commands" + colors.ENDC)
 
+@riku.tree.error
+async def on_app_command_error(interaction: discord. Interaction, error: app_commands.AppCommandError):
+     if isinstance(error, app_commands.CommandOnCooldown):
+        await interaction.response.send_message(error, ephemeral = True)
 
-@riku.event
-async def on_command_error (interaction: discord.Interaction, error):
-        if isinstance(error, commands.errors.MissingRequiredArgument):
-                await interaction.response.send_message ("Required arguments are missing", delete_after=5)
-        elif isinstance(error, commands.errors.BadArgument):
-                await interaction.response.send_message (f"The data type passed is invalid\n {str(error)}")
-        elif isinstance(error, commands.errors.NotOwner):
-                await interaction.response.send_message ("You are not the owner of me!")
-        elif isinstance(error, commands.errors.MissingAnyRole):
-                await interaction.response.send_message ("This command requires `Administrator` or `Owner`, name must be exactly the same to use this command")
-        elif isinstance(error, commands.errors.MissingPermissions):
-                await interaction.response.send_message ("You do not have required permissions to use this command")
-        elif isinstance(error, commands.errors.CheckFailure):
-                await interaction.response.send_message ("You can't use this command, because its made for a specific server command")
-        else:
-            raise error
 
 @riku.tree.command(name="help", description="Help menu")
 async def help(interaction: discord.Interaction):
         user = interaction.user
-        embed=discord.Embed(color=0x2f3136)
+        embed=discord.Embed(color=0x2B2D31)
         embed.set_author(name="Riku's commands")
         embed.set_thumbnail(url = user.avatar)
-        embed.add_field(name="<:Icon_Diamond:1074200776689324133> Standard", value="`help` `avatar` `userinfo` `serverinfo` `latency` `botinfo`", inline=False)
+        embed.add_field(name="<:Icon_Diamond:1074200776689324133> Standard", value="`help` `avatar` `userinfo` `serverinfo` `latency` `botinfo` `weather`", inline=False)
         embed.add_field(name="<:Icon_Star:1074200070909607998> 4fun", value="`say` `beep` `gay` `pp`", inline=False)
         embed.add_field(name="<:Icon_Staff:1074200242653765632> Moderation *In development*", value="`slowmode` `nickname`", inline=False)
-        embed.add_field(name="<a:shiggy:1074200490423877663> Anime related", value="`search_anime` `search_character` `anime_news`\n`waifu` `neko` `shinobu` `megumin`\n`hug` `kill` `cry` `bite` `blush` `kick` `smug` `kiss` `lick`", inline=False)
+        embed.add_field(name="<a:shiggy:1074200490423877663> Anime related", value="`search_anime` `search_character` `anime_news`\n`waifu` `neko` `shinobu` `megumin` `rpic` `rgif`\n`hug` `kill` `cry` `bite` `blush` `kick` `smug` `kiss` `lick`", inline=False)
         embed.add_field(name="<:Icon_Developer:1074200034695983144> Bot developer only", value="`changestatus`", inline=False)
         embed.timestamp = datetime.datetime.utcnow()
         embed.set_footer(text=f"Requested by {user.name}#{user.discriminator}")
@@ -77,7 +66,7 @@ async def avatar(interaction: discord.Interaction,  user : discord.Member=None):
 
 @riku.tree.command(name="botinfo", description="Shows information about the bot")
 async def botinfo(interaction: discord.Interaction):
-        embed = discord.Embed(color=0x2f3136)
+        embed = discord.Embed(color=0x2B2D31)
         embed.set_author(name= "Information about Riku!")
         embed.add_field(name="<:Icon_Developer:1074200034695983144> Language and Libraries", value="Language: [Python](https://www.python.org/)\nLibraries: [discord.py](https://discordpy.readthedocs.io/en/stable/), [animec](https://animec.readthedocs.io/en/latest/)", inline=True)
         embed.add_field(name="<a:shiggy:1074200490423877663> Riku's ID", value="1060061912710258699", inline=True)
@@ -93,7 +82,7 @@ async def userinfo(interaction: discord.Interaction, user: discord.Member = None
             user = interaction.user     
         
         date_format = "%a, %d %b %Y %I:%M %p"
-        embed = discord.Embed(color=0x2f3136, description=user.mention)
+        embed = discord.Embed(color=0x2B2D31, description=user.mention)
         embed.set_author(name=str(user), icon_url=user.avatar)
         embed.set_thumbnail(url=user.avatar)
         embed.add_field(name="Joined server at", value=user.joined_at.strftime(date_format))
@@ -112,7 +101,7 @@ async def userinfo(interaction: discord.Interaction, user: discord.Member = None
 @riku.tree.command(name="serverinfo", description="Shows information about the server")
 async def serverinfo(interaction: discord.Interaction):
         creationDate = interaction.guild.created_at.__format__('%A, %d. %B %Y')
-        embed = discord.Embed(color=0x2f3136)
+        embed = discord.Embed(color=0x2B2D31)
         embed.add_field(name = "Owner", value=f"<@{interaction.guild.owner_id}>", inline=True)
         embed.add_field(name = "Categories", value=f"{len(interaction.guild.categories)}", inline=True)
         embed.add_field(name = "Text channels", value=f"{len(interaction.guild.text_channels)}", inline=True)
@@ -146,7 +135,7 @@ async def search_anime(interaction: discord.Interaction, query: str):
         except:
             await interaction.response.send_message("<a:blondenekocry:1074276279920103496> No corresponding anime is found for the search query")
             return
-        embed = discord.Embed(title = anime.title_english, url = anime.url, description = f"{anime.description[:400]}...", color = 0x2f3136)
+        embed = discord.Embed(title = anime.title_english, url = anime.url, description = f"{anime.description[:400]}...", color = 0x2B2D31)
         embed.add_field(name = "Episodes", value = str(anime.episodes))
         embed.add_field(name = "Status", value = str(anime.status))
         embed.add_field(name = "Genres", value = str(anime.genres))
@@ -164,7 +153,7 @@ async def search_character(interaction: discord.Interaction, query: str):
         except:
             await cinteraction.response.send_message("<a:blondenekocry:1074276279920103496> No corresponding anime character is found for the search query")
             return
-        embed=discord.Embed(title = char.title, url = char.url, color = 0x2f3136)
+        embed=discord.Embed(title = char.title, url = char.url, color = 0x2B2D31)
         embed. set_image(url = char.image_url)
         embed. set_footer(text = ", " .join(list(char.references.keys())[:3]))
         await interaction.response.send_message(embed=embed)
@@ -176,7 +165,7 @@ async def anime_news(interaction: discord.Interaction ,amount:int=3):
         titles = news.titles
         desc = news.description
 
-        embed = discord.Embed(title = "Latest anime news", color = 0x2f3136)
+        embed = discord.Embed(title = "Latest anime news", color = 0x2B2D31)
         embed.set_thumbnail(url = news.images[0])
         embed.timestamp = datetime.datetime.utcnow()
 
@@ -189,7 +178,7 @@ async def waifu(interaction: discord.Interaction):
     
         waifus = animec.Waifu.waifu()
     
-        embed=discord.Embed(title = f"Here's your waifu~!" ,url = waifus,color = 0x2f3136)
+        embed=discord.Embed(title = f"Here's your waifu~!" ,url = waifus,color = 0x2B2D31)
         embed.set_image(url = waifus)
         await interaction.response.send_message(embed=embed)
 
@@ -198,7 +187,7 @@ async def neko(interaction: discord.Interaction):
     
         nekos = animec.Waifu.neko()
     
-        embed=discord.Embed(title = f"Here's your lovely neko!" ,url = nekos,color = 0x2f3136)
+        embed=discord.Embed(title = f"Here's your lovely neko!" ,url = nekos,color = 0x2B2D31)
         embed.set_image(url = nekos)
         await interaction.response.send_message(embed=embed)
 
@@ -207,7 +196,7 @@ async def megumin(interaction: discord.Interaction):
     
         megumin = animec.Waifu.megumin()
     
-        embed=discord.Embed(title = f"Here's your lovely megumin!" ,url = megumin,color = 0x2f3136)
+        embed=discord.Embed(title = f"Here's your lovely megumin!" ,url = megumin,color = 0x2B2D31)
         embed.set_image(url = megumin)
         await interaction.response.send_message(embed=embed)
 
@@ -216,7 +205,7 @@ async def shinobu(interaction: discord.Interaction):
     
         shinobu = animec.Waifu.shinobu()
     
-        embed=discord.Embed(title = f"Here's your lovely shinobu!" ,url = shinobu,color = 0x2f3136)
+        embed=discord.Embed(title = f"Here's your lovely shinobu!" ,url = shinobu,color = 0x2B2D31)
         embed.set_image(url = shinobu)
         await interaction.response.send_message(embed=embed)
         
@@ -225,7 +214,7 @@ async def rgif(interaction: discord.Interaction):
     
         rgif = animec.Waifu.random_gif()
     
-        embed=discord.Embed(title = f"Random anime gif" ,url = rgif,color = 0x2f3136)
+        embed=discord.Embed(title = f"Random anime gif" ,url = rgif,color = 0x2B2D31)
         embed.set_image(url = shinobu)
         await interaction.response.send_message(embed=embed)
 
@@ -234,7 +223,7 @@ async def rpic(interaction: discord.Interaction):
     
         rpic = animec.Waifu.random()
     
-        embed=discord.Embed(title = f"Random waifu" ,url = rpic,color = 0x2f3136)
+        embed=discord.Embed(title = f"Random waifu" ,url = rpic,color = 0x2B2D31)
         embed.set_image(url = shinobu)
         await interaction.response.send_message(embed=embed)
 
@@ -249,7 +238,7 @@ async def hug(interaction: discord.Interaction, user : discord.Member):
                 f"hugged {user.name}. Aww, adorable!", f"is hugging {user.name}. uwu", f"is hugging {user.name}. OwO", f"hugged {user.name}. Huggy hug", f"is hugging {user.name}. <3!"]
         hug = animec.Waifu.hug()
     
-        embed=discord.Embed(color = 0x2f3136)
+        embed=discord.Embed(color = 0x2B2D31)
         embed.set_author(name = f"{interaction.user.name} {(random.choice(hugs))}", icon_url = interaction.user.avatar)
         embed.set_image(url = hug)
         await interaction.response.send_message(embed=embed)
@@ -260,7 +249,7 @@ async def kill(interaction: discord.Interaction, user : discord.Member):
         kills = [f"kills {user.name}. Ouch!", f"killed {user.name}. Brutal!", f"brutally killed {user.name}. Oh my..", f"killed {user.name}.. What have you done...?"]
         kill = animec.Waifu.kill()
     
-        embed=discord.Embed(color = 0x2f3136)
+        embed=discord.Embed(color = 0x2B2D31)
         embed.set_author(name = f"{ctx.author.name} {(random.choice(kills))}", icon_url = ctx.author.avatar)
         embed.set_image(url = kill)
         await ctx.send(embed=embed)
@@ -271,7 +260,7 @@ async def blush(interaction: discord.Interaction):
         blushes = [" has turned into a tomato", "'s face is red~", " is blushing! cute~", " blushed!! >///<"]
         blush = animec.Waifu.blush()
     
-        embed=discord.Embed(color = 0x2f3136)
+        embed=discord.Embed(color = 0x2B2D31)
         embed.set_author(name = f"{interaction.user.name}{(random.choice(blushes))}.", icon_url = interaction.user.avatar)
         embed.set_image(url = blush)
         await interaction.response.send_message(embed=embed)
@@ -282,7 +271,7 @@ async def cry(interaction: discord.Interaction):
         cries = ["cries... :'c", "is crying... there there...", "is crying... :c", "needs a hug..."]
         cry = animec.Waifu.cry()
     
-        embed=discord.Embed(color = 0x2f3136)
+        embed=discord.Embed(color = 0x2B2D31)
         embed.set_author(name = f"{ctx.author.name} {(random.choice(cries))}.", icon_url = ctx.author.avatar)
         embed.set_image(url = cry)
         await interaction.response.send_message(embed=embed)
@@ -293,7 +282,7 @@ async def bite(interaction: discord.Interaction, user : discord.Member):
         bites = [f"gives {user.name} a bite! Yumm~", f"bites {user.name}! Owie", f"bites {user.name}!! Kinky ;)"]
         bite = animec.Waifu.bite()
     
-        embed=discord.Embed(color = 0x2f3136)
+        embed=discord.Embed(color = 0x2B2D31)
         embed.set_author(name = f"{interaction.user.name} {(random.choice(bites))}.", icon_url = interaction.user.avatar)
         embed.set_image(url = bite)
         await interaction.response.send_message(embed=embed)
@@ -304,7 +293,7 @@ async def akick(interaction: discord.Interaction, user : discord.Member):
         kickes = [f"kicks {user.name}. Holy shit!", f"kicked {user.name}. You felt that pain?", f"just kicked {user.name}. Very hard!!"]
         kick = animec.Waifu.kick()
     
-        embed=discord.Embed(color = 0x2f3136)
+        embed=discord.Embed(color = 0x2B2D31)
         embed.set_author(name = f"{interaction.user.name} {(random.choice(kickes))}.", icon_url = interaction.user.avatar)
         embed.set_image(url = kick)
         await interaction.response.send_message(embed=embed)
@@ -315,7 +304,7 @@ async def smug(interaction: discord.Interaction):
         smugs = ["thinks little of you ;)", "scoffs c:<", "has a smug look c;"]
         smug = animec.Waifu.smug()
     
-        embed=discord.Embed(color = 0x2f3136)
+        embed=discord.Embed(color = 0x2B2D31)
         embed.set_author(name = f"{interaction.user.name} {(random.choice(smugs))}.", icon_url = interaction.user.avatar)
         embed.set_image(url = smug)
         await interaction.response.send_message(embed=embed)
@@ -326,7 +315,7 @@ async def kiss(interaction: discord.Interaction, user : discord.Member):
         kisses = [f"kissed {user.name}! Cute!", f"kisses {user.name}'s lips~", f"kisses {user.name}!! OwO"]
         kiss = animec.Waifu.kiss()
     
-        embed=discord.Embed(color = 0x2f3136)
+        embed=discord.Embed(color = 0x2B2D31)
         embed.set_author(name = f"{interaction.user.name} {(random.choice(kisses))}.", icon_url = interaction.user.avatar)
         embed.set_image(url = kiss)
         await interaction.response.send_message(embed=embed)
@@ -336,7 +325,7 @@ async def lick(interaction: discord.Interaction, user : discord.Member):
         licks = [f"licks {user.name}! OwO", f"licks {user.name}!! How does it taste?!", f"gives {user.name} a lick!"]
         lick = animec.Waifu.lick()
     
-        embed=discord.Embed(color = 0x2f3136)
+        embed=discord.Embed(color = 0x2B2D31)
         embed.set_author(name = f"{interaction.user.name} {(random.choice(licks))}.", icon_url = interaction.user.avatar)
         embed.set_image(url = lick)
         await interaction.response.send_message(embed=embed)
@@ -355,9 +344,9 @@ async def gay(interaction: discord.Interaction, user : discord.Member=None):
         gay = random.randint(0, 100)
         if user == None:
             user = interaction.user
-            embed = discord.Embed(description = f"You are {gay}% gay :gay_pride_flag:", color = 0x2f3136)
+            embed = discord.Embed(description = f"You are {gay}% gay :gay_pride_flag:", color = 0x2B2D31)
         else:
-            embed = discord.Embed(description = f"{user.name} is {gay}% gay :gay_pride_flag:", color = 0x2f3136)
+            embed = discord.Embed(description = f"{user.name} is {gay}% gay :gay_pride_flag:", color = 0x2B2D31)
         embed.set_author(name = "gay r8 machine")
         await interaction.response.send_message(embed=embed)
 
@@ -371,7 +360,7 @@ async def pp(interaction: discord.Interaction, user : discord.Member=None):
         if user == None:
             user = interaction.user
         dick = "8{}D".format("=" * random.randint(0, 15))
-        embed = discord.Embed(description = f"{user.name}'s penis\n{dick}", color = 0x2f3136)
+        embed = discord.Embed(description = f"{user.name}'s penis\n{dick}", color = 0x2B2D31)
         embed.set_author(name = "peepee size machine")
         await interaction.response.send_message(embed=embed)
 
@@ -410,5 +399,34 @@ async def slowmode(interaction: discord.Interaction, seconds: int=None):
         else:
                 await interaction.response.send_message ("You do not have required permissions to use this command")
 
+
+@riku.tree.command(name="weather", description="Checks weather for the given location.")
+@app_commands.checks.cooldown(1, 60, key=lambda i: (i.user.id))
+@app_commands.describe(location = "Enter the location name you want to check the weather")
+async def weather(interaction: discord.Interaction,  location : str):
+        api_key = os.getenv("weather_api_key")
+        base_url = "http://api.openweathermap.org/data/2.5/weather?"
+        user = interaction.user
+        city_name = location
+        complete_url = base_url + "appid=" + api_key + "&q=" + city_name
+
+        x = location.lower()
+        x = requests.get(complete_url).json()
+        country, city = x['sys']['country'], x['name']
+        cord1, cord2 = x['coord']['lon'], x['coord']['lat']
+        main, desc = x['weather'][0]['main'], x['weather'][0]['description']
+        speed, humid = x['wind']['speed'], x['main']['humidity']
+        icon, clouds = x['weather'][0]['icon'], x['clouds']['all']
+        temp, temp_f = x['main']['temp'], x['main']['feels_like']
+        embed=discord.Embed(
+                title=f'{city} :flag_{country.lower()}:', 
+                colour=0x2B2D31, 
+                description=f'Longitude : {cord1} | Latitude : {cord2}')
+        embed.add_field(name=':leaves: Wind', value=f'{speed} MPH')
+        embed.add_field(name=':foggy: Humidity', value=f'{humid}%')
+        embed.add_field(name=':white_sun_cloud: Weather', value=f'{main} ({desc})')
+        embed.add_field(name=':cloud: Clouds', value=f'{clouds}')
+        embed.add_field(name=':thermometer: Temperature', value=f'{round(temp - 273.15)} °C *(Feels like {round(temp_f - 273.15)} °C)*')
+        await interaction.response.send_message(embed=embed)
 
 riku.run(os.getenv("riku_token"))

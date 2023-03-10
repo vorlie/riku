@@ -2,7 +2,7 @@
 
 Welcome to the source code of my discord bot! Please don't
 
-## Usage and Libraries
+## Usage
 - Install [Python 3.11.2](https://www.python.org/ftp/python/3.11.2/python-3.11.2-amd64.exe)
 
 - Check the box which says "Add python.exe to PATH"

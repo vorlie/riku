@@ -67,8 +67,8 @@ async def avatar(interaction: discord.Interaction,  user : discord.Member=None):
 @riku.tree.command(name="botinfo", description="Shows information about the bot")
 async def botinfo(interaction: discord.Interaction):
         embed = discord.Embed(color=0x2B2D31)
-        embed.set_author(name= "Information about Riku!")
-        embed.add_field(name="<:Icon_Developer:1074200034695983144> Language and Libraries", value="Language: [Python](https://www.python.org/)\nLibraries: [discord.py](https://discordpy.readthedocs.io/en/stable/), [animec](https://animec.readthedocs.io/en/latest/)", inline=True)
+        embed.set_author(name= "Information about Riku!", description="Riku's [source code](https://github.com/vorlie/riku)")
+        embed.add_field(name="<:Icon_Developer:1074200034695983144> Language and Libraries", value="Language: [Python](https://www.python.org/)\nLibraries: [discord.py](https://discordpy.readthedocs.io/en/stable/), [animec](https://animec.readthedocs.io/en/latest/), [requests](https://pypi.org/project/requests/)", inline=True)
         embed.add_field(name="<a:shiggy:1074200490423877663> Riku's ID", value="1060061912710258699", inline=True)
         embed.add_field(name="<a:blondenekowave:1074276292108750889> Riku's owner", value="<@670986272377929743>", inline=False)
         embed.timestamp = datetime.datetime.utcnow()

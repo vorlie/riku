@@ -43,7 +43,7 @@ async def help(interaction: discord.Interaction):
         embed=discord.Embed(color=0x2B2D31)
         embed.set_author(name="Riku's commands")
         embed.set_thumbnail(url = user.avatar)
-        embed.add_field(name="<:Icon_Diamond:1074200776689324133> Standard", value="`help` `avatar` `userinfo` `serverinfo` `latency` `botinfo` `weather`", inline=False)
+        embed.add_field(name="<:Icon_Diamond:1074200776689324133> Standard", value="`help` `avatar` `userinfo` `serverinfo` `latency` `info` `weather`", inline=False)
         embed.add_field(name="<:Icon_Star:1074200070909607998> 4fun", value="`say` `beep` `gay` `pp`", inline=False)
         embed.add_field(name="<:Icon_Staff:1074200242653765632> Moderation *In development*", value="`slowmode` `nickname`", inline=False)
         embed.add_field(name="<a:shiggy:1074200490423877663> Anime related", value="`search_anime` `search_character` `anime_news`\n`waifu` `neko` `shinobu` `megumin` `rpic` `rgif`\n`hug` `kill` `cry` `bite` `blush` `kick` `smug` `kiss` `lick`", inline=False)
@@ -64,11 +64,11 @@ async def avatar(interaction: discord.Interaction,  user : discord.Member=None):
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
-@riku.tree.command(name="botinfo", description="Shows information about the bot")
-async def botinfo(interaction: discord.Interaction):
-        embed = discord.Embed(color=0x2B2D31)
-        embed.set_author(name= "Information about Riku!", description="Riku's [source code](https://github.com/vorlie/riku)")
-        embed.add_field(name="<:Icon_Developer:1074200034695983144> Language and Libraries", value="Language: [Python](https://www.python.org/)\nLibraries: [discord.py](https://discordpy.readthedocs.io/en/stable/), [animec](https://animec.readthedocs.io/en/latest/), [requests](https://pypi.org/project/requests/)", inline=True)
+@riku.tree.command(name="info", description="Shows information about the bot")
+async def info(interaction: discord.Interaction):
+        embed = discord.Embed(description="Riku's [source code](https://github.com/vorlie/riku)",color=0x2B2D31)
+        embed.set_author(name= "Information about Riku!")
+        embed.add_field(name="<:Icon_Developer:1074200034695983144> Language and Libraries", value="Language: [Python](https://www.python.org/)\nLibraries: [discord.py](https://discordpy.readthedocs.io/en/stable/), [animec](https://animec.readthedocs.io/en/latest/), [requests](https://requests.readthedocs.io/en/latest/)", inline=True)
         embed.add_field(name="<a:shiggy:1074200490423877663> Riku's ID", value="1060061912710258699", inline=True)
         embed.add_field(name="<a:blondenekowave:1074276292108750889> Riku's owner", value="<@670986272377929743>", inline=False)
         embed.timestamp = datetime.datetime.utcnow()

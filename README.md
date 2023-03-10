@@ -1,6 +1,6 @@
 # Discord bot made in discord.py
 
-Welcome to the source code of my discord bot! Please don't
+Welcome to the source code of my discord bot!
 
 ## Usage
 - Install [Python 3.11.2](https://www.python.org/ftp/python/3.11.2/python-3.11.2-amd64.exe)

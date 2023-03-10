@@ -5,6 +5,7 @@ import random
 import time
 import animec
 import os
+from dotenv import load_dotenv
 from discord import app_commands
 from discord.ext import commands
 
@@ -215,7 +216,7 @@ async def rgif(interaction: discord.Interaction):
         rgif = animec.Waifu.random_gif()
     
         embed=discord.Embed(title = f"Random anime gif" ,url = rgif,color = 0x2B2D31)
-        embed.set_image(url = shinobu)
+        embed.set_image(url = rgif)
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="rpic", description="Sends random waifus from random category")
@@ -224,7 +225,7 @@ async def rpic(interaction: discord.Interaction):
         rpic = animec.Waifu.random()
     
         embed=discord.Embed(title = f"Random waifu" ,url = rpic,color = 0x2B2D31)
-        embed.set_image(url = shinobu)
+        embed.set_image(url = rpic)
         await interaction.response.send_message(embed=embed)
 
 # ===============================================================================
@@ -429,4 +430,5 @@ async def weather(interaction: discord.Interaction,  location : str):
         embed.add_field(name=':thermometer: Temperature', value=f'{round(temp - 273.15)} °C *(Feels like {round(temp_f - 273.15)} °C)*')
         await interaction.response.send_message(embed=embed)
 
-riku.run(os.getenv("riku_token"))
+load_dotenv()
+riku.run(os.getenv("token"))

@@ -35,7 +35,7 @@ async def on_ready():
 @riku.tree.error
 async def on_app_command_error(interaction: discord. Interaction, error: app_commands.AppCommandError):
      if isinstance(error, app_commands.CommandOnCooldown):
-        await interaction.response.send_message(error, ephemeral = True)
+        await interaction.response.send_message(error)
 
 
 @riku.tree.command(name="help", description="Help menu")
@@ -131,7 +131,7 @@ async def latency(interaction: discord.Interaction):
 # ===============================================================================
 
 @riku.tree.command(name="search_anime", description="Search for given anime")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 10, key=lambda i: (i.user.id))
 @app_commands.describe(query = "What anime you want to search?")
 async def search_anime(interaction: discord.Interaction, query: str):
         try: 
@@ -150,7 +150,7 @@ async def search_anime(interaction: discord.Interaction, query: str):
         await interaction.response.send_message(embed = embed)
 
 @riku.tree.command(name="search_character", description="Search for anime character")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 10, key=lambda i: (i.user.id))
 @app_commands.describe(query = "What character you want to search?")
 async def search_character(interaction: discord.Interaction, query: str):
         try: 
@@ -164,7 +164,7 @@ async def search_character(interaction: discord.Interaction, query: str):
         await interaction.response.send_message(embed=embed)
                                 
 @riku.tree.command(name="anime_news", description="Sends latest anime news")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 10, key=lambda i: (i.user.id))
 async def anime_news(interaction: discord.Interaction ,amount:int=3):
         news = animec.Aninews(amount)
         links = news.links
@@ -180,7 +180,7 @@ async def anime_news(interaction: discord.Interaction ,amount:int=3):
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="waifu", description="Sends random waifu")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def waifu(interaction: discord.Interaction):
     
         waifus = animec.Waifu.waifu()
@@ -190,7 +190,7 @@ async def waifu(interaction: discord.Interaction):
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="neko", description="Sends random neko")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def neko(interaction: discord.Interaction):
     
         nekos = animec.Waifu.neko()
@@ -200,7 +200,7 @@ async def neko(interaction: discord.Interaction):
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="megumin", description="Sends random megumin")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def megumin(interaction: discord.Interaction):
     
         megumin = animec.Waifu.megumin()
@@ -210,7 +210,7 @@ async def megumin(interaction: discord.Interaction):
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="shinobu", description="Sends random shinobu")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def shinobu(interaction: discord.Interaction):
     
         shinobu = animec.Waifu.shinobu()
@@ -220,7 +220,7 @@ async def shinobu(interaction: discord.Interaction):
         await interaction.response.send_message(embed=embed)
         
 @riku.tree.command(name="rgif", description="Sends random anime gif")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def rgif(interaction: discord.Interaction):
     
         rgif = animec.Waifu.random_gif()
@@ -230,7 +230,7 @@ async def rgif(interaction: discord.Interaction):
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="rpic", description="Sends random waifus from random category")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def rpic(interaction: discord.Interaction):
     
         rpic = animec.Waifu.random()
@@ -243,7 +243,7 @@ async def rpic(interaction: discord.Interaction):
 # ===============================================================================
 
 @riku.tree.command(name="hug", description="You need a hug? :c")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def hug(interaction: discord.Interaction, user : discord.Member):
 
         
@@ -257,7 +257,7 @@ async def hug(interaction: discord.Interaction, user : discord.Member):
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="kill", description="kill someone idk")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def kill(interaction: discord.Interaction, user : discord.Member):
         
         kills = [f"kills {user.name}. Ouch!", f"killed {user.name}. Brutal!", f"brutally killed {user.name}. Oh my..", f"killed {user.name}.. What have you done...?"]
@@ -269,7 +269,7 @@ async def kill(interaction: discord.Interaction, user : discord.Member):
         await ctx.send(embed=embed)
 
 @riku.tree.command(name="blush", description="blushy blush")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def blush(interaction: discord.Interaction):
         
         blushes = [" has turned into a tomato", "'s face is red~", " is blushing! cute~", " blushed!! >///<"]
@@ -281,7 +281,7 @@ async def blush(interaction: discord.Interaction):
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="cry", description="why are you crying lol")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def cry(interaction: discord.Interaction):
         
         cries = ["cries... :'c", "is crying... there there...", "is crying... :c", "needs a hug..."]
@@ -293,7 +293,7 @@ async def cry(interaction: discord.Interaction):
         await interaction.response.send_message(embed=embed)
 
 @riku.command(name="bite", description="Bite someone")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def bite(interaction: discord.Interaction, user : discord.Member):
         
         bites = [f"gives {user.name} a bite! Yumm~", f"bites {user.name}! Owie", f"bites {user.name}!! Kinky ;)"]
@@ -305,7 +305,7 @@ async def bite(interaction: discord.Interaction, user : discord.Member):
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="kick", description="Kick someone in the ass lol")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def akick(interaction: discord.Interaction, user : discord.Member):
         
         kickes = [f"kicks {user.name}. Holy shit!", f"kicked {user.name}. You felt that pain?", f"just kicked {user.name}. Very hard!!"]
@@ -317,7 +317,7 @@ async def akick(interaction: discord.Interaction, user : discord.Member):
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="smug", description="smug idk lol")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def smug(interaction: discord.Interaction):
         
         smugs = ["thinks little of you ;)", "scoffs c:<", "has a smug look c;"]
@@ -329,7 +329,7 @@ async def smug(interaction: discord.Interaction):
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="kiss", description="Kiss someone uwu")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def kiss(interaction: discord.Interaction, user : discord.Member):
         
         kisses = [f"kissed {user.name}! Cute!", f"kisses {user.name}'s lips~", f"kisses {user.name}!! OwO"]
@@ -341,7 +341,7 @@ async def kiss(interaction: discord.Interaction, user : discord.Member):
         await interaction.response.send_message(embed=embed)
 
 @riku.tree.command(name="lick", description="Lick someone")
-@app_commands.checks.cooldown(1, 30, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 5, key=lambda i: (i.user.id))
 async def lick(interaction: discord.Interaction, user : discord.Member):
         licks = [f"licks {user.name}! OwO", f"licks {user.name}!! How does it taste?!", f"gives {user.name} a lick!"]
         lick = animec.Waifu.lick()
@@ -422,7 +422,7 @@ async def slowmode(interaction: discord.Interaction, seconds: int=None):
 
 
 @riku.tree.command(name="weather", description="Checks weather for the given location.")
-@app_commands.checks.cooldown(1, 60, key=lambda i: (i.user.id))
+@app_commands.checks.cooldown(1, 15, key=lambda i: (i.user.id))
 @app_commands.describe(location = "Enter the location name you want to check the weather")
 async def weather(interaction: discord.Interaction,  location : str):
         api_key = os.getenv("weather_api_key")
